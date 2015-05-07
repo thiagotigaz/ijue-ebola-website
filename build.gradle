@@ -1,0 +1,72 @@
+buildscript {
+  ext {
+    springBootVersion = '1.2.3.RELEASE'
+  }
+    repositories {
+        maven { url "http://repo.spring.io/libs-release" }
+        mavenLocal()
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.3.RELEASE")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'spring-boot'
+apply plugin: 'war'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+version = '1.0'
+
+war {
+    baseName = 'ijueebola'
+    version =  '1.0'
+}
+
+repositories {
+    mavenCentral()
+}
+
+configurations {
+    providedRuntime
+}
+
+dependencies {
+	// Spring MVC, Thymeleaf and Tomcat(war)
+    compile group: 'commons-collections', name: 'commons-collections', version: '3.2'
+    compile("org.springframework.boot:spring-boot-starter-thymeleaf:1.2.0.RELEASE")
+    //providedRuntime("org.springframework.boot:spring-boot-starter-tomcat:${springBootVersion}")
+
+    // Spring Data, Security and Context
+    compile("org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}")
+    compile("org.springframework.boot:spring-boot-starter-security:${springBootVersion}")
+	compile("org.springframework:spring-context-support:4.1.4.RELEASE")
+    
+    // Database
+    compile("org.hibernate:hibernate-core:4.3.6.Final")
+    compile("org.postgresql:postgresql:9.3-1102-jdbc41")
+    
+    // Email
+    compile("javax.activation:activation:1.1.1")
+    compile("com.sun.mail:javax.mail:1.5.2")
+    
+	// Tests
+    testCompile group: 'junit', name: 'junit', version: '4.+'
+}
+
+test {
+    systemProperties 'property': 'value'
+}
+
+uploadArchives {
+    repositories {
+       flatDir {
+           dirs 'repos'
+       }
+    }
+}
